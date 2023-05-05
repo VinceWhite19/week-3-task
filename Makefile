@@ -4,6 +4,10 @@ VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HE
 TARGETOS=linux
 TARGETARCH=$(shell dpkg --print-architecture)
 
+install: 
+	go mod init
+	go install
+
 format:
 	gofmt -s -w ./
 
@@ -16,8 +20,8 @@ test:
 get: 
 	go get
 
-build: format get
-	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot -ldflags="-X 'github.dev/VinceWhite19/kbot/cmd.appVersion=${VERSION}'"
+build: install format get
+	CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -v -o kbot
 
 image:
 	docker build . -t "${REGISTRY}/${APP}:${TARGETARCH}"  --build-arg TARGETARCH=${TARGETARCH}
