@@ -26,6 +26,9 @@ build: install format get
 image:
 	docker build . -t "${REGISTRY}/${APP}:${TARGETARCH}"  --build-arg TARGETARCH=${TARGETARCH}
 
+windows: 
+	docker build . -t "${REGISTRY}/${APP}:amd64-windows"  --build-arg TARGETARCH=windows
+
 push:
 	docker push ${REGISTRY}/${APP}:${TARGETARCH}
 
